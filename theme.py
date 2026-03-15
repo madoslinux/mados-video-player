@@ -354,6 +354,176 @@ messagedialog .titlebar {{
     border-radius: 8px;
     padding: 8px 16px;
 }}
+
+/* ===== Floating Controls (Ultra Minimalist - Half Size) ===== */
+
+/* Floating control bar container - ultra thin - half size */
+.floating-controls {{
+    background-color: rgba(30, 35, 45, 0.85);
+    border-radius: 8px;
+    padding: 2px 6px;
+    margin: 8px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}}
+
+/* Control bar inside floating container */
+.control-bar-floating {{
+    background: transparent;
+    padding: 0;
+}}
+
+/* Control buttons - invisible, just icons - half size */
+.control-bar-floating button {{
+    background: transparent;
+    border: none;
+    border-radius: 2px;
+    min-width: 16px;
+    min-height: 16px;
+    padding: 1px 3px;
+    margin: 0 1px;
+    font-size: 10px;
+    color: rgba(216, 222, 233, 0.8);
+    transition: color 150ms ease;
+    box-shadow: none;
+}}
+
+.control-bar-floating button:hover {{
+    background: transparent;
+    color: {nord6};
+}}
+
+.control-bar-floating button:active {{
+    background: transparent;
+    color: {nord8};
+}}
+
+/* Play button - slightly larger */
+.control-bar-floating button.play-btn {{
+    background: transparent;
+    color: {nord6};
+    font-size: 12px;
+    min-width: 18px;
+}}
+
+.control-bar-floating button.play-btn:hover {{
+    background: transparent;
+    color: {nord8};
+}}
+
+/* Time labels - minimal - half size */
+.time-label-floating {{
+    color: rgba(216, 222, 233, 0.7);
+    font-family: "Michroma", "SF Mono", "Monaco", monospace;
+    font-size: 9px;
+    font-weight: normal;
+    min-width: 24px;
+}}
+
+/* Floating seek slider - ultra thin */
+.seek-slider-floating {{
+    min-width: 50px;
+}}
+
+.seek-slider-floating trough {{
+    background-color: rgba(67, 76, 94, 0.5);
+    border-radius: 2px;
+    min-height: 3px;
+}}
+
+.seek-slider-floating highlight {{
+    background: {nord8};
+    border-radius: 2px;
+    min-height: 3px;
+}}
+
+.seek-slider-floating slider {{
+    background: {nord6};
+    border: none;
+    border-radius: 50%;
+    min-width: 10px;
+    min-height: 10px;
+    margin: -3.5px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}}
+
+.seek-slider-floating:hover slider {{
+    opacity: 1;
+}}
+
+/* Floating volume slider - ultra thin */
+.volume-slider-floating {{
+    min-width: 50px;
+}}
+
+.volume-slider-floating trough {{
+    background-color: rgba(67, 76, 94, 0.5);
+    border-radius: 1px;
+    min-height: 2px;
+}}
+
+.volume-slider-floating highlight {{
+    background: {nord8};
+    border-radius: 1px;
+    min-height: 2px;
+}}
+
+.volume-slider-floating slider {{
+    background: {nord6};
+    border: none;
+    border-radius: 50%;
+    min-width: 8px;
+    min-height: 8px;
+    margin: -3px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}}
+
+.volume-slider-floating:hover slider {{
+    opacity: 1;
+}}
+
+/* Separators - subtle dots */
+.control-bar-floating separator {{
+    background-color: transparent;
+    min-width: 8px;
+}}
+
+/* Playlist window header */
+.playlist-header {{
+    background-color: {nord1};
+    border-bottom: 1px solid {nord2};
+    padding: 8px 12px;
+}}
+
+.playlist-header button {{
+    background: transparent;
+    border: 1px solid {nord3};
+    border-radius: 4px;
+    min-width: 28px;
+    min-height: 28px;
+    padding: 2px;
+}}
+
+.playlist-header button:hover {{
+    background-color: {nord2};
+    border-color: {nord9};
+}}
+
+/* ===== Placeholder (No video loaded) ===== */
+
+.placeholder-icon-large {{
+    color: rgba(76, 86, 106, 0.6);
+    font-size: 96px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}}
+
+.placeholder-text-large {{
+    color: rgba(216, 222, 233, 0.5);
+    font-size: 14px;
+    font-weight: normal;
+}}
 """.format(**NORD)
 
 

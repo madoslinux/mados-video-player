@@ -5,21 +5,32 @@ Launch the video player application. Optionally pass one or more
 video file paths as arguments to add them to the playlist.
 
 Usage:
-    python3 -m mados_video_player [file1 file2 ...]
+    mados-video-player [file1 file2 ...]
 """
 
 import sys
-import gi
+import os
 
+# Add the directory containing this script to the path
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
+
+import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
-from .app import VideoPlayerApp
+
+from app import VideoPlayerApp
+from __init__ import __app_name__
 
 
 def main():
     """Parse arguments and launch the GTK application."""
     files = sys.argv[1:] if len(sys.argv) > 1 else []
-    VideoPlayerApp(files)
+    
+    # Create and show window
+    window = VideoPlayerApp(files)
+    window.show_all()
+    
     Gtk.main()
 
 

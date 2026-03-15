@@ -86,6 +86,7 @@ TRANSLATIONS = {
         "cancel": "Cancel",
         "ok": "OK",
         "close": "Close",
+        "menu": "Menu",
     },
     "Español": {
         "title": "Reproductor de Video madOS",
@@ -164,6 +165,7 @@ TRANSLATIONS = {
         "cancel": "Cancelar",
         "ok": "Aceptar",
         "close": "Cerrar",
+        "menu": "Menú",
     },
     "Français": {
         "title": "Lecteur Video madOS",
@@ -242,6 +244,7 @@ TRANSLATIONS = {
         "cancel": "Annuler",
         "ok": "OK",
         "close": "Fermer",
+        "menu": "Menu",
     },
     "Deutsch": {
         "title": "madOS Videoplayer",
@@ -320,6 +323,7 @@ TRANSLATIONS = {
         "cancel": "Abbrechen",
         "ok": "OK",
         "close": "Schliessen",
+        "menu": "Menü",
     },
     "\u4e2d\u6587": {
         "title": "madOS \u89c6\u9891\u64ad\u653e\u5668",
@@ -398,6 +402,7 @@ TRANSLATIONS = {
         "cancel": "\u53d6\u6d88",
         "ok": "\u786e\u5b9a",
         "close": "\u5173\u95ed",
+        "menu": "\u83dc\u5355",
     },
     "\u65e5\u672c\u8a9e": {
         "title": "madOS \u30d3\u30c7\u30aa\u30d7\u30ec\u30fc\u30e4\u30fc",
@@ -476,6 +481,7 @@ TRANSLATIONS = {
         "cancel": "\u30ad\u30e3\u30f3\u30bb\u30eb",
         "ok": "OK",
         "close": "\u9589\u3058\u308b",
+        "menu": "\u30e1\u30cb\u30e5\u30fc",
     },
 }
 
