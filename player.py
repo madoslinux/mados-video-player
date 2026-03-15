@@ -126,22 +126,70 @@ class PlayerEngine:
         if self._pipeline is None:
             return
 
+        # Create a DrawingArea for video output (fallback)
+        self._video_widget = Gtk.DrawingArea()
+        self._video_widget.set_size_request(640, 360)
+        
         # Try gtksink first (best for Wayland/GTK integration)
         gtksink = None
         try:
             gtksink = Gst.ElementFactory.make("gtksink", "videosink")
-        except (Exception, Gst.MissingPluginError) as e:
-            print(f"gtksink not available: {e}")
+        except (Exception, Gst.MissingPluginError):
             gtksink = None
 
         if gtksink is not None:
             self._pipeline.set_property("video-sink", gtksink)
             self._video_widget = gtksink.get_property("widget")
         else:
-            # Fall back to autovideosink
-            autosink = Gst.ElementFactory.make("autovideosink", "videosink")
-            if autosink:
-                self._pipeline.set_property("video-sink", autosink)
+            # Detect display server type
+            display = Gdk.Display.get_default()
+            is_wayland = isinstance(display, Gdk.WaylandDisplay)
+            is_x11 = isinstance(display, Gdk.X11Display)
+            
+            if is_wayland:
+                # For Wayland, try gtkglsink (OpenGL-based, works with GTK)
+                gtkglsink = None
+                try:
+                    gtkglsink = Gst.ElementFactory.make("gtkglsink", "videosink")
+                except (Exception, Gst.MissingPluginError):
+                    gtkglsink = None
+                
+                if gtkglsink is not None:
+                    self._pipeline.set_property("video-sink", gtkglsink)
+                    self._video_widget = gtkglsink.get_property("widget")
+                else:
+                    # Fall back to waylandsink - will open separate window
+                    # This is the best we can do without gtksink/gtkglsink
+                    videosink = Gst.ElementFactory.make("waylandsink", "videosink")
+                    if videosink:
+                        self._pipeline.set_property("video-sink", videosink)
+                        # Hide the drawing area since video will be in separate window
+                        self._video_widget.set_visible(False)
+            elif is_x11:
+                # Create a bin with xvimagesink or ximagesink for X11
+                sink_bin = Gst.Bin.new("sink_bin")
+                
+                # Try xvimagesink first (better performance)
+                videosink = Gst.ElementFactory.make("xvimagesink", "videosink")
+                if videosink is None:
+                    # Fall back to ximagesink
+                    videosink = Gst.ElementFactory.make("ximagesink", "videosink")
+                
+                if videosink:
+                    # Set force-aspect-ratio to maintain aspect ratio
+                    videosink.set_property("force-aspect-ratio", True)
+                    sink_bin.add(videosink)
+                    sink_bin.add_pad(Gst.GhostPad.new("sink", videosink.get_static_pad("sink")))
+                    self._pipeline.set_property("video-sink", sink_bin)
+                    
+                    # Connect to realize signal to set window handle
+                    self._video_widget.connect("realize", self._on_video_widget_realize)
+                    self._video_widget.set_double_buffered(False)
+            else:
+                # Fallback to autovideosink
+                autosink = Gst.ElementFactory.make("autovideosink", "videosink")
+                if autosink:
+                    self._pipeline.set_property("video-sink", autosink)
 
         # Set initial volume
         self._pipeline.set_property("volume", self._volume)
@@ -153,6 +201,43 @@ class PlayerEngine:
         bus.connect("message::error", self._on_bus_error)
         bus.connect("message::state-changed", self._on_bus_state_changed)
         bus.connect("message::tag", self._on_bus_tag)
+        bus.connect("message::element", self._on_bus_element)
+        
+        self._overlay = None
+        
+    def _on_video_widget_realize(self, widget):
+        """Set the window handle for video overlay when widget is realized."""
+        if self._pipeline is None:
+            return
+            
+        # Get the window handle
+        window = widget.get_window()
+        if window is not None and hasattr(window, 'get_xid'):
+            # Get the XID for X11
+            xid = window.get_xid()
+            
+            # Find the video sink element
+            video_sink = self._pipeline.get_property("video-sink")
+            if video_sink:
+                # Get the actual sink element from the bin
+                if isinstance(video_sink, Gst.Bin):
+                    video_sink = video_sink.get_by_name("videosink")
+                
+                if video_sink and hasattr(video_sink, 'set_window_handle'):
+                    video_sink.set_window_handle(xid)
+                    
+    def _on_bus_element(self, bus, message):
+        """Handle element messages from the bus."""
+        if GstVideo is not None and message.get_structure():
+            struct = message.get_structure()
+            if struct.get_name() == "prepare-window-handle":
+                # Get the video sink
+                video_sink = message.src
+                if self._video_widget and self._video_widget.get_window():
+                    window = self._video_widget.get_window()
+                    if hasattr(window, 'get_xid'):
+                        xid = window.get_xid()
+                        video_sink.set_window_handle(xid)
 
     # ------------------------------------------------------------------
     # Public API
