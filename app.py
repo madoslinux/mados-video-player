@@ -757,6 +757,11 @@ class PlaylistWindow(Gtk.Window):
         self.set_default_size(300, 400)
         self.set_transient_for(parent)
         
+        # Handle Escape key to close
+        controller = Gtk.EventControllerKey()
+        controller.connect("key-pressed", self._on_key_pressed)
+        self.add_controller(controller)
+        
         # Build UI - use expand to fill window
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         vbox.set_vexpand(True)
@@ -832,6 +837,13 @@ class PlaylistWindow(Gtk.Window):
         
         # Refresh to show current playlist items
         self._refresh()
+    
+    def _on_key_pressed(self, controller, keyval, keycode, state):
+        """Handle key press to close on Escape."""
+        if keyval == Gdk.KEY_Escape:
+            self.destroy()
+            return True
+        return False
     
     def _on_cursor_changed(self, treeview):
         """Handle cursor change to show delete button."""
