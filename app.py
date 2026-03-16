@@ -14,12 +14,12 @@ gi.require_version("Gtk", "3.0")
 gi.require_version("Gdk", "3.0")
 from gi.repository import Gtk, Gdk, GLib, Pango
 
-from __init__ import __version__, __app_id__, __app_name__
-from theme import apply_theme
-from translations import detect_system_language, get_text
-from playlist import Playlist, RepeatMode, is_media_file, ALL_MEDIA_EXTENSIONS
-from player import PlayerEngine, format_time, GST_AVAILABLE
-from database import PlaylistDB
+from .__init__ import __version__, __app_id__, __app_name__
+from .theme import apply_theme
+from .translations import detect_system_language, get_text
+from .playlist import Playlist, RepeatMode, is_media_file, ALL_MEDIA_EXTENSIONS
+from .player import PlayerEngine, format_time, GST_AVAILABLE
+from .database import PlaylistDB
 
 if GST_AVAILABLE:
     from gi.repository import Gst
