@@ -483,7 +483,6 @@ TRANSLATIONS = {
         "close": "\u9589\u3058\u308b",
         "menu": "\u30e1\u30cb\u30e5\u30fc",
     },
-}
 
     "Português": {
         "title": "madOS Reprodutor de Vídeo",
@@ -766,6 +765,7 @@ TRANSLATIONS = {
         "ok": "확인",
         "close": "닫기",
     },
+}
 
 DEFAULT_LANGUAGE = "English"
 
