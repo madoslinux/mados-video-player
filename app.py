@@ -89,7 +89,7 @@ class VideoPlayerApp(Gtk.Window):
         # Show window
         self.show_all()
         self._controls_container.set_visible(False)
-        self._update_placeholder()
+        self._placeholder.set_visible(False)
         self._update_title()
         
         # Connect size allocation for responsive controls
