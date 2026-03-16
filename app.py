@@ -74,6 +74,7 @@ class VideoPlayerApp(Gtk.Window):
         self._build_ui()
 
         # Load initial files
+        has_initial_files = False
         if initial_files:
             for f in initial_files:
                 abspath = os.path.abspath(f)
@@ -81,15 +82,17 @@ class VideoPlayerApp(Gtk.Window):
                     self._playlist.add_directory(abspath)
                 elif os.path.isfile(abspath):
                     self._playlist.add_file(abspath)
-            if not self._playlist.is_empty:
+            has_initial_files = not self._playlist.is_empty
+            if has_initial_files:
                 self._play_current()
         else:
             self._restore_session()
+            has_initial_files = not self._playlist.is_empty
 
         # Show window
         self.show_all()
         self._controls_container.set_visible(False)
-        self._placeholder.set_visible(False)
+        self._placeholder.set_visible(not has_initial_files)
         self._update_title()
         
         # Connect size allocation for responsive controls
