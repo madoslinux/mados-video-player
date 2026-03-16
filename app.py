@@ -92,7 +92,6 @@ class VideoPlayerApp(Gtk.Window):
         # Show window
         self.show_all()
         self._controls_container.set_visible(False)
-        self._placeholder.set_visible(not has_initial_files)
         self._update_title()
         
         # Connect size allocation for responsive controls
@@ -123,21 +122,6 @@ class VideoPlayerApp(Gtk.Window):
         self._video_event_box.add(self._video_display)
         self._video_event_box.connect("button-press-event", self._on_video_click)
         self._overlay.add(self._video_event_box)
-
-        # Placeholder for when no video is loaded
-        self._placeholder = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12)
-        self._placeholder.set_halign(Gtk.Align.CENTER)
-        self._placeholder.set_valign(Gtk.Align.CENTER)
-        
-        placeholder_icon = Gtk.Label(label="▶")
-        placeholder_icon.get_style_context().add_class("placeholder-icon-large")
-        self._placeholder.pack_start(placeholder_icon, False, False, 0)
-        
-        placeholder_text = Gtk.Label(label=self._t("drop_files_here"))
-        placeholder_text.get_style_context().add_class("placeholder-text-large")
-        self._placeholder.pack_start(placeholder_text, False, False, 0)
-        
-        self._overlay.add_overlay(self._placeholder)
 
         # Floating controls container (bottom center) - wrap in EventBox to capture events
         self._controls_event_box = Gtk.EventBox()
@@ -304,13 +288,6 @@ class VideoPlayerApp(Gtk.Window):
         cr.fill()
         return False
 
-    def _update_placeholder(self):
-        """Update placeholder visibility based on video state."""
-        if self._has_video:
-            self._placeholder.set_visible(False)
-        else:
-            self._placeholder.set_visible(True)
-
     def _on_video_click(self, widget, event):
         """Handle click on video area (double-click = fullscreen)."""
         if event.type == Gdk.EventType.DOUBLE_BUTTON_PRESS:
@@ -384,7 +361,6 @@ class VideoPlayerApp(Gtk.Window):
 
         if self._engine.load(filepath):
             self._has_video = True
-            self._update_placeholder()
             self._engine.play()
             self._update_title()
 
