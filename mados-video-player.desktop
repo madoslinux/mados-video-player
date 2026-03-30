@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=madOS Video Player
+Comment=Video player with playlist
+Exec=/usr/local/bin/mados-video-player %f
+Icon=video-x-generic
+Terminal=false
+Type=Application
+Categories=AudioVideo;Player;
+MimeType=video/mp4;video/x-matroska;video/avi;video/quicktime;video/webm;
+StartupWMClass=mados-video-player
+StartupNotify=true
