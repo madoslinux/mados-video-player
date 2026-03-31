@@ -5,8 +5,8 @@ import gi
 gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 
-from .app import VideoPlayerApp
-from .__init__ import __app_name__
+from app import VideoPlayerApp
+from __init__ import __app_name__
 
 
 def main():
